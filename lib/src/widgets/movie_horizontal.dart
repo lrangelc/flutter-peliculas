@@ -37,18 +37,22 @@ class MovieHorizontal extends StatelessWidget {
   }
 
   Widget _tarjeta(BuildContext context, Pelicula pelicula) {
-    return Container(
+    pelicula.uniqueId = '${pelicula.id}-hori';
+    final tarjeta = Container(
       margin: EdgeInsets.only(right: 10.0),
       child: Column(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: FadeInImage(
-              image: NetworkImage(pelicula.getPosterImg()),
-              placeholder: AssetImage('assets/img/no-image.jpg'),
-              fit: BoxFit.cover,
-              height: 117.0,
-              width: 100.0,
+          Hero(
+            tag: pelicula.uniqueId,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: FadeInImage(
+                image: NetworkImage(pelicula.getPosterImg()),
+                placeholder: AssetImage('assets/img/no-image.jpg'),
+                fit: BoxFit.cover,
+                height: 117.0,
+                width: 100.0,
+              ),
             ),
           ),
           SizedBox(
@@ -62,35 +66,43 @@ class MovieHorizontal extends StatelessWidget {
         ],
       ),
     );
+
+    return GestureDetector(
+      child: tarjeta,
+      onTap: () {
+        print('Titulo de la pelicula: ${pelicula.id}');
+        Navigator.pushNamed(context, 'detalle', arguments: pelicula);
+      },
+    );
   }
 
-  List<Widget> _tarjetas(BuildContext context) {
-    return peliculas.map((pelicula) {
-      return Container(
-        margin: EdgeInsets.only(right: 10.0),
-        child: Column(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: FadeInImage(
-                image: NetworkImage(pelicula.getPosterImg()),
-                placeholder: AssetImage('assets/img/no-image.jpg'),
-                fit: BoxFit.cover,
-                height: 117.0,
-                width: 100.0,
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              pelicula.title,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.caption,
-            )
-          ],
-        ),
-      );
-    }).toList();
-  }
+  // List<Widget> _tarjetas(BuildContext context) {
+  //   return peliculas.map((pelicula) {
+  //     return Container(
+  //       margin: EdgeInsets.only(right: 10.0),
+  //       child: Column(
+  //         children: <Widget>[
+  //           ClipRRect(
+  //             borderRadius: BorderRadius.circular(20.0),
+  //             child: FadeInImage(
+  //               image: NetworkImage(pelicula.getPosterImg()),
+  //               placeholder: AssetImage('assets/img/no-image.jpg'),
+  //               fit: BoxFit.cover,
+  //               height: 117.0,
+  //               width: 100.0,
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 5.0,
+  //           ),
+  //           Text(
+  //             pelicula.title,
+  //             overflow: TextOverflow.ellipsis,
+  //             style: Theme.of(context).textTheme.caption,
+  //           )
+  //         ],
+  //       ),
+  //     );
+  //   }).toList();
+  // }
 }

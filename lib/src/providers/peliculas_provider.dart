@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:peliculas/src/models/pelicula_model.dart';
+import 'package:peliculas/src/models/actores_model.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -49,7 +50,7 @@ class PeliculasProvider {
     final resp = await _procesarRespuesta(url);
     _populares.addAll(resp);
     popularesSink(_populares);
-    print("Pagina: $_popularesPage");
+    print("Pagina X: $_popularesPage");
     _cargando = false;
 
     return resp;
@@ -61,5 +62,16 @@ class PeliculasProvider {
     final peliculas = new Peliculas.fromJsonList(decodedData['results']);
 
     return peliculas.items;
+  }
+
+
+  Future<List<Actor>> getCast(String movieId) async {
+    final url = Uri.https(_url, '3/movie/$movieId/credits',{'api_key': _apiKey});
+
+    final resp = await http.get(url);
+    final decodedData = json.decode(resp.body);
+    final cast = new Actores.fromJsonList(decodedData['cast']);
+
+    return cast.actores;
   }
 }
