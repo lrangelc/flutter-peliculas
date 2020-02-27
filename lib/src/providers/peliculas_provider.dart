@@ -64,14 +64,25 @@ class PeliculasProvider {
     return peliculas.items;
   }
 
-
   Future<List<Actor>> getCast(String movieId) async {
-    final url = Uri.https(_url, '3/movie/$movieId/credits',{'api_key': _apiKey});
+    final url =
+        Uri.https(_url, '3/movie/$movieId/credits', {'api_key': _apiKey});
 
     final resp = await http.get(url);
     final decodedData = json.decode(resp.body);
     final cast = new Actores.fromJsonList(decodedData['cast']);
 
     return cast.actores;
+  }
+
+  Future<List<Pelicula>> buscarPeliculas(String query) async {
+    final url = Uri.https(_url, '3/search/movie', {
+      'api_key': _apiKey,
+      'language': _language,
+      'page': '1',
+      'query': query
+    });
+
+    return await _procesarRespuesta(url);
   }
 }
