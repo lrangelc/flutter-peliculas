@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
               'Populares',
-              style: Theme.of(context).textTheme.subtitle,
+              style: Theme.of(context).textTheme.subtitle2,
             ),
           ),
           SizedBox(
